@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>IFE JavaScript Task 01</title>
+  </head>
+<body>
+<!-- 页面加载后，将提供的空气质量数据数组，按照某种逻辑（比如空气质量大于60）进行过滤筛选，最后将符合条件的数据按照一定的格式要求显示在网页上 -->
+
+  <h5>污染城市前三</h5>
+  <ul id="aqi-list">
+<!--
+    <li>第一名：福州（样例），10</li>
+      <li>第二名：福州（样例），10</li> -->
+  </ul>
+
+<script type="text/javascript">
+
+var aqiData = [
+  ["北京", 90],
+  ["上海", 50],
+  ["福州", 10],
+  ["广州", 50],
+  ["成都", 90],
+  ["西安", 100]
+];
+
+window.onload=function(){
+  /*
+  遍历读取aqiData中各个城市的数据
+  将空气质量指数大于60的城市显示到aqi-list的列表中
+  */
+  var af=[];
+  for(var i=0;i<aqiData.length;i++){
+    if(aqiData[i][1]>60){
+      af.push(aqiData[i]);
+    }
+  }
+
+    var n=1;
+    af.sort(sortBy());
+// 将排序后的值输出
+    for(var k=0;k<af.length;k++){
+    var Ul=document.getElementById('aqi-list');
+    var Li=document.createElement('li');
+    Li.innerHTML='第'+n+'名:'+af[k][0]+':'+af[k][1];
+    n++;
+    Ul.appendChild(Li);
+    }
+
+
+// 按照污染程度进行排序
+function sortBy(){
+    return function cmp(a,b){
+      if(a[1]>b[1]){
+        return -1;
+      }else if(a[1]==b[1]){
+        // 污染指数相同时按照城市名称拼音序排序
+        if(a[0]>b[0]){
+          return 1;
+        }else{
+          return -1;
+        }
+      }else if(a[1]<b[1]){
+        return 1;
+      }
+    }
+
+  }
+}
+
+</script>
+</body>
+</html>
+<!--
+arrayObject.sort(sortby)；参数sortby可选。规定排序顺序。必须是函数。
+如果调用该方法时没有使用参数，将按字母顺序对数组中的元素进行排序，说得更精确点，是按照字符编码的顺序进行排序(注意是字符串)。
+
+return 1  交换位置
+return -1  不交换位置 -->

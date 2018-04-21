@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <title>Task-6</title>
+    <!-- 基于任务四进行升级
+将新元素输入框从input改为textarea
+允许一次批量输入多个内容，格式可以为数字、中文、英文等，可以通过用回车，逗号（全角半角均可），顿号，空格（全角半角、Tab等均可）等符号作为不同内容的间隔
+增加一个查询文本输入框，和一个查询按钮，当点击查询时，将查询词在各个元素内容中做模糊匹配，将匹配到的内容进行特殊标识，如文字颜色等。举例，内容中有abcd，查询词为ab或bc，则该内容需要标识 -->
+    <style>
+    label{
+        font-size:14px;
+    }
+    #txt_ipt{
+        width:200px;
+        height:60px;
+        display:block;
+        margin:10px;
+    }
+
+    #ques_ipt{
+        display:block;
+        margin:10px;
+    }
+    #show_box{
+        width:400px;
+        height:60px;
+        float:left;
+        margin-left:300px;
+        margin-top:-150px;
+
+    }
+    .pipei{
+        background-color:#4D76F0;
+        font-weight:bold;
+    }
+    </style>
+</head>
+<body>
+<label for="txt_ipt">请输入要添加的文本</label>
+<textarea id="txt_ipt" name="inp" ></textarea>
+<input type="button" name="input_button" id='ipt_btn' value='添加'>
+
+<input type="text" name="ques_area" id='ques_ipt' placeholder="请输入要查询的内容">
+<input type="button" name="ques_button" id='ques_btn' value='查询'>
+
+<box id="show_box" name="inp" ></box>
+
+</body>
+<script>
+    var txt_ipt=document.getElementById('txt_ipt');
+    var ipt_btn=document.getElementById('ipt_btn');
+    var ques_btn=document.getElementById('ques_btn');
+    var ques_ipt=document.getElementById('ques_ipt');
+    var show_box=document.getElementById('show_box');
+
+    function add_handler(ele,type,handler){
+    if(ele.addEventListener){ele.addEventListener(type,handler,false);}
+    else if(ele.attachEvent){ele.attachEvent('on'+type,handler);}
+    else{event['on'+type]=handler;}
+    }
+// 将添加的内容重新显示
+ipt_btn.onclick=function(){
+    show_box.innerHTML=txt_ipt.value;
+}
+// 添加查询事件
+add_handler(ques_btn,'click',ques);
+function ques(){
+// 将查询词在各个元素内容中做模糊匹配，将匹配到的内容进行特殊标识，如文字颜色等。举例，内容中有abcd，查询词为ab或bc，则该内容需要标识
+    var query_str='('+ques_ipt.value+')';
+    var str=new RegExp(query_str,'g');
+    // $1只针对分组有效
+    show_box.innerHTML=txt_ipt.value.replace(str,'<span>$1</span>');
+    var spans=document.getElementsByTagName('span');
+    for(var i=0;i<spans.length;i++){
+        spans[i].className='pipei';
+    }
+// 对输入的值按符号进行分组
+    // var reg=/[\w\u4e00-\u9fa5]+/g;
+    // var arr=show_box.innerHTML.match(reg);
+ /*   for(i=0;i<arr.length;i++){
+    var reg2=arr[i].match(str);
+    if(reg2!=null){
+        // alert(str);
+        alert(1);
+    }else{
+        alert(3);
+    }
+
+    }*/
+}
+</script>
+</html>

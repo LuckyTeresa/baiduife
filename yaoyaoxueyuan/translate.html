@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <title>Document</title>
+    <style>
+        div{
+            width:50px;
+            height:50px;
+            background-color:pink;
+            position:absolute;
+            top:0;
+            left:0;
+        }
+        #btn{
+            display:block;
+            margin-left:200px;
+        }
+    </style>
+</head>
+<body>
+<div id='box'>
+
+</div>
+<button type="button" id='btn'>点我移动盒子</button>
+<script>
+    window.onload=function(){
+        var btn=document.getElementById('btn');
+        var box=document.getElementById('box');
+
+             console.log(getStyle(box,'left'));
+        btn.onclick=function(){
+            box.style.cssText="transform:translate(100px,100px);transition:transform 3s ease  0.2s;"
+            console.log(getStyle(box,'left'));
+        }
+        function getStyle(ele,attr){
+        return ele.currentStyle ? ele.currentStyle[attr]:getComputedStyle(ele)[attr];
+        }
+    }
+
+</script>
+
+</body>
+</html>

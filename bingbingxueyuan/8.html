@@ -1,0 +1,143 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <title>Document</title>
+    <style>
+    *{
+        font-size:12px;
+    }
+        div{
+            border:2px solid #122852;
+            display:flex;
+            justify-content:space-around;
+            align-items: stretch;
+            margin-left:5px;
+            padding:10px;
+        }
+        .wrap{
+            width:1200px;
+            height:100px;
+        }
+    </style>
+</head>
+<body>
+<div class="wrap">好a
+    <div class="left">云烟
+            <div class="bus">巴士</div>
+            <div class="taxi">出租车</div>
+            <div class="bike">自行车</div>
+            <div class="subway">地铁</div>
+    </div>
+    <div class="center">晴天
+        <div class="center1">你好</div>
+        <div class="center2">八月
+            <div class="cat">小猫</div>
+            <div class="dog">小狗</div>
+            <div class="monkey">小猴子</div>
+        </div>
+
+    </div>
+    <div class="right">右右
+            <div class="right3">胡歌</div>
+                <div class="apple">苹果</div>
+                <div class="pine">梨</div>
+                <div class="banana">妈妈</div>
+        </div>
+        <div class="right2">韩小君
+            <div class="right5">爸爸</div>
+            <div class="right6">404</div>
+        </div>
+    </div>
+<input type="text"  id="text" name="" placeholder="请输入要查找的内容" value="">
+<input type="button"  id="traversal" name="" value="搜索">
+
+<script>
+    var traversal=document.getElementById('traversal');
+    var text=document.getElementById('text');
+    var wrap=document.getElementsByClassName('wrap')[0];
+    var childs=[];
+traversal.onclick=function(){
+    if(!(text.value=='')){
+        childs.push(wrap);
+        WF(wrap);
+        chgColor(childs);
+    }else{
+        alert('请输入要查找的内容');
+    }
+}
+function WF(obj){
+    if(obj!==null){
+        // obj不为空并且object下面还有子元素
+        if(obj!==null&&obj.firstElementChild){
+            for(var i=0;i<obj.childNodes.length;i++){
+                if(obj.childNodes[i].nodeType=='1'){
+                    childs.push(obj.childNodes[i]);
+                    WF(obj.childNodes[i]);
+                }
+            }
+        }
+    }
+}
+function chgColor(arr){
+    var i=0;
+    arr[i].style.backgroundColor='pink';
+    // console.log(arr[i].firstChild.nodeValue);
+    // console.log(text.value);
+    var timer=setInterval(function(){
+        if(i==arr.length-1){
+            // 针对最后一个元素进行内容匹配
+            if(arr[i].firstChild.nodeValue.replace(/\s*$/g,"")==text.value){
+               alert('已查找到目标内容！');
+           }else{
+            alert('没有找到！');
+           }
+            stop(arr,i,timer);
+        }else{
+            // 注意此处如果arr[i]是一个父级元素，那么他的nodeValue的值会包含一些空格，这会导致他与text.value不一致。因为这个firstChild是从arr[i]对象的父元素的尖括号一结束就开始算的，所以会包含一些空格
+            if(arr[i].firstChild.nodeValue.replace(/\s*$/g,"")==text.value){
+                alert('已查找到目标内容！');
+                stop(arr,i,timer);
+            }else{
+                arr[i].style.backgroundColor='';
+                arr[i+1].style.backgroundColor='pink';
+               };
+            }
+            i++;
+    },300);
+}
+function stop(array,index,tim){
+                array[index].style.backgroundColor='';
+                clearInterval(tim);
+                childs=[];
+    }
+</script>
+<!-- 遇到的几个bug:
+
+2.找到内容后颜色变为粉红色，第二次查找时原先的颜色没有清空。直接在找到目标内容后清空原有样式
+
+
+3.多次输入查找后没有对全局的childs数组进行清空！！！导致从第二次查找开始每次都会比上一次多遍历一遍数组
+
+4.最后一个元素中的内容由于没有包含在前面，导致弹出没有找到。把i++移到第一个if的最外层来，这样逻辑才是正确的。
+
+
+
+1.含有子元素的父节点中的内容查找不到，直接跳过
+    原因：父节点中输出的firstChild.nodeValue带有空格！！！，需要把空格去掉再比较才可以得出与输入内容一致的结果
+    <div id="box1">*
+    123
+    *<a href="http://www.baidu.com" target='_blank'>12bb</a>
+    <span>农夫果园</span>
+    <p>我是另外一个段落</p>
+</div>
+<script>
+var box1=document.getElementById('box1');
+    console.log(box1.firstChild.nodeValue);
+    // if(box1.firstChild.nodeValue.replace(/\s*$/g,"")=='123'){
+     if(box1.firstChild.nodeValue=='123'){
+        alert('yes');
+    }
+-->
+</body>
+</html>

@@ -1,0 +1,173 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <title>Task-4</title>
+    <!-- 基于上一任务，限制输入的数字在10-100
+队列元素数量最多限制为60个，当超过60个时，添加元素时alert出提示
+队列展现方式变化如图，直接用高度表示数字大小
+实现一个简单的排序功能，如冒泡排序（不限制具体算法），用可视化的方法表达出来 -->
+    <style>
+    .span_style{
+        background-color:#FF8040;
+        display:inline-block;
+        margin-left:5px;
+        font-size:14px;
+        text-align:center;
+        width:25px;
+       /*  padding:5px; */
+        vertical-align:bottom;
+    }
+    div{
+        height:100px;
+        margin:0 auto;
+
+    }
+    </style>
+</head>
+<body>
+<label for="input">请输入要添加的数字</label>
+<input id="input" type="text" name="inp">
+<input id="ist_l" type="button" name="ist_l" value="左侧入">
+<input id="ist_r" type="button" name="ist_r" value="右侧入">
+<input id="del_l" type="button" name="del_l" value="左侧出">
+<input id="del_r" type="button" name="del_r" value="右侧出">
+<input id='sort' type="button" name="sort" value='sort'>
+<p id='tol'></p>
+
+<div>
+
+</div>
+<div id="sort_box">
+
+</div>
+</body>
+<script>
+    var ist_l=document.getElementById('ist_l');
+    var ist_r=document.getElementById('ist_r');
+    var del_l=document.getElementById('del_l');
+    var del_r=document.getElementById('del_r');
+    var sort=document.getElementById('sort');
+    var nums=document.getElementsByTagName('span');
+    var big_box=document.getElementsByTagName('div')[0];
+    var sort_box=document.getElementById('sort_box')[0];
+    var tol=document.getElementById('tol');
+    var input=document.getElementById('input');
+    var total=0;
+
+    function add_handler(ele,type,handler){
+    if(ele.addEventListener){ele.addEventListener(type,handler,false);}
+    else if(ele.attachEvent){ele.attachEvent('on'+type,handler);}
+    else{event['on'+type]=handler;}
+    }
+
+// 在程序开始执行前就绑定统计数字的功能
+total_num();
+add_handler(ist_l,'click',add_num);
+add_handler(ist_r,'click',add_num);
+add_handler(del_l,'click',remove_num);
+add_handler(del_r,'click',remove_num);
+add_handler(sort,'click',ss);
+
+
+function add_num(){
+    if(total<60){
+    var num=input.value;
+    var box=document.createElement('span');
+        // var reg=/^[+-]?\d+(\.\d*)?$/.test(num);
+        // 匹配10-100
+        var reg=/^[1-9]\d{1}$|100/.test(num);
+        if(reg){
+        box.innerHTML=num;
+        box.className='span_style';
+        box.style.height=num*2+'px';
+        if(this.id=='ist_r'){
+        big_box.appendChild(box);
+        // 在创建每个span标签的时候就绑定移除事件
+        add_handler(big_box.lastChild,'click',remove_num);
+        }else if(this.id=='ist_l'){big_box.insertBefore(box,nums[0]);
+        }
+    }else{alert('数据输入不规范');}
+        // 将input框输入值清空，添加数据后再对总数进行汇总
+        input.value=null;
+        total_num();}
+        else{alert('数据输入已超上限');}
+}
+
+function remove_num(){
+    if(total==0){
+        alert('没有数据可删除！');
+    }else{
+        /*alert(this.nodeName);
+        alert(this.id);*/
+        if(this.id=='del_l'){
+            alert(nums[0].innerHTML+"即将被移除");
+            big_box.removeChild(nums[0]);
+    }else if(this.id=='del_r'){
+            alert(nums[nums.length-1].innerHTML+'即将被移除');
+            big_box.removeChild(nums[nums.length-1]);
+    }else if(this.nodeName=='SPAN'){
+        alert(this.innerHTML);
+        big_box.removeChild(this);}
+    total_num();
+    }
+}
+
+function total_num(){
+        total=nums.length;
+        tol.innerHTML='共输入'+total+'个数字';
+}
+// 对排序后的数组重新进行显示
+function ss(){
+   var new_nums=sort_num(nums);
+   // console.log(new_nums);
+for(var n=0;n<new_nums.length;n++){
+    var he=parseInt(new_nums[n].innerHTML);
+    new_nums[n].className='span_style';
+    new_nums[n].style.height=he*2+'px';}
+}
+// 对数组排序
+function sort_num(arr){
+    // k：循环次数   i:每两个数之间进行比较
+  for(var k=0;k<total-1;k++){
+  for(var i=0;i<total-1;i++){
+    if(parseInt(arr[i].innerHTML)>parseInt(arr[i+1].innerHTML)){
+        // 调用resort对两个数的值进行交换，注意交换的是里面的内容
+        resort(arr,i);
+    }
+  }
+  }
+  return arr;
+}
+
+// 注意此处必须要是对数组中的值进行交换，而不是数组对象
+function resort(arr,index){
+    var temp;
+        temp=arr[index].innerHTML;
+        arr[index].innerHTML=arr[index+1].innerHTML;
+        arr[index+1].innerHTML=temp;
+}
+
+
+</script>
+</html>
+<!-- setAttribute设置的属性是针对于这个标签的，就像a标签的href img的title，甚至也可以是不存在的属性，都可以设置成功，在浏览器中F12查看就知道了。但是如果直接对某个box用setAttribute设置其css属性，并不会成功。因为会将其设置为box的某一个属性，而不是style中的属性
+
+js设置css属性的常见方式
+
+1、注意要加单位和引号
+box.style.height='70px'
+alert(box.style.width);
+发现一个问题：在css中设置的样式获取不到，在js中设置的可以获取到具体数字
+
+2、box.setAttribute('style','height:50px');
+或者用setAttribute为其添加某个类
+obj.setAttribute("class", "style2");
+
+3、改变class
+element.className = 'blue';
+element.className += 'blue fb';
+
+4、设置cssText
+box.style.cssText='width:50px;background-color:red';
+ -->

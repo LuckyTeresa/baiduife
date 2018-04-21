@@ -1,0 +1,50 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<script type="text/javascript" src='https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js'></script>
+<title></title>
+</head>
+<body>
+<!--在文章内添加 selected-article ID-->
+<div id="selectedArticle">
+ <p>欢迎来到脚本之家...</p>
+ <p>脚本之家是国内专业的网站建设资源、脚本编程学习类网站...</p>
+ <p>提供asp、php、asp.net、javascript、jquery、vbscript、dos批处理、网页制作、网络编程、网站建设等编程资料...</p>
+</div>
+
+<script type="text/javascript">
+document.writeln("<style>");
+document.writeln(".tooltip {width:219px;height:33px;background:url(bg-wenzi.png) no-repeat left top;}");
+document.writeln(".tooltip a {width:219px;height:33px;display:block;}");
+document.writeln("</style>");
+$(function () {
+ //将该id下的文章，鼠标选中松开后弹窗
+ $("#selectedArticle").mouseup(function (e) {
+  var x = 10;
+  var y = 10;
+  var r = "";
+  if (document.selection) {
+   r = document.selection.createRange().text;
+  }
+  else if (window.getSelection()) {
+   r = window.getSelection();
+  }
+  if (r!= "") {
+   var bowen = " ";
+   var tooltip = "<div id='tooltip' class='tooltip'><a href='###' target='_blank'>" + bowen + "</a></div>";
+   $("body").append(tooltip);
+   $("#tooltip").css({
+    "top": (e.pageY + y) + "px",
+    "left": (e.pageX + x) + "px",
+    "position": "absolute"
+   }).show("fast");
+  }
+ }).mousedown(function () {
+  $("#tooltip").remove();
+ });
+});
+</script>
+</body>
+</html>

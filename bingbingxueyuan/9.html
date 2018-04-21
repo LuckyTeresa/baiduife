@@ -1,0 +1,194 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <title>Document</title>
+    <style>
+    *{
+        font-size:12px;
+        margin:0px;
+    }
+        div{
+            border:2px solid #122852;
+            display:flex;
+            justify-content:space-around;
+            padding:5px;
+            margin-left:5px;
+        }
+        .wrap{
+            width:1100px;
+            height:100px;
+            margin:10px;
+
+        }
+
+    </style>
+</head>
+<body>
+<div class="wrap">大哥
+    <div class="left">云烟
+            <div class="bus">巴士</div>
+            <div class="taxi">出租车</div>
+            <div class="bike">自行车</div>
+            <div class="subway">地铁</div>
+            <div>牛奶</div>
+    </div>
+    <div>杭州
+
+    </div>
+    <div class="center">晴天
+        <div class="center1">你好</div>
+        <div class="center2">八月
+            <div class="cat">小猫</div>
+            <div class="dog">小狗</div>
+            <div class="monkey">小猴子</div>
+        </div>
+
+    </div>
+    <div class="right">右右
+            <div class="right3">胡歌</div>
+                <div class="apple">苹果</div>
+                <div class="pine">梨</div>
+                <div class="banana">赵丽颖</div>
+                <div class="banana">房东的猫</div>
+        </div>
+        <div class="right2">韩小君
+            <div class="right5">爸爸</div>
+            <div class="banana">妈妈</div>
+            <div class="right6">404</div>
+            <div class="right6">爷爷</div>
+
+        </div>
+    </div>
+<input type="text"  id="text" name="" placeholder="请输入要查找的内容" value="">
+<input type="button"  id="traversal_1" name="" value="广度优先搜索">
+<input type="button"  id="traversal_2" name="" value="深度优先搜索">
+<input type="button"  id="add" name="" value="增加">
+<input type="button"  id="del" name="" value="删除">
+
+<script>
+    var traversal_1=document.getElementById('traversal_1');
+    var traversal_2=document.getElementById('traversal_2');
+    var text=document.getElementById('text');
+    var wrap=document.getElementsByClassName('wrap')[0];
+    var input=document.getElementsByTagName('input');
+    var childs=[];
+    var temp=[];
+
+    wrap.onclick=function(event){
+       event.target.style.backgroundColor='pink';
+       temp.push(event.target);
+          }
+
+    // input[3]增加,支持多选
+    input[3].onclick=function(){
+        if(temp.length==0){
+            alert("请选择要添加的目标元素");
+        }else{
+            for(var i=0;i<temp.length;i++){
+                var newChild=document.createElement('div');
+                newChild.innerText=text.value;
+                temp[i].append(newChild);
+                temp[i].style.backgroundColor='';
+            }
+        temp=[];
+        }
+    }
+
+    // input[4]删除,支持多选
+    input[4].onclick=function(){
+        for(var i=0;i<temp.length;i++){
+            temp[i].parentNode.removeChild(temp[i]);
+        }
+        temp=[];
+    }
+
+     traversal_1.onclick=function(event){
+
+        if(!(text.value=='')){
+            DF(wrap);
+            console.log(childs);
+            chgColor(childs);
+        }else{
+            alert('请输入要查找的内容');
+        };
+    }
+    // 从根节点开始往下面找，一直找到最小子节点,从上往下
+    function DF(obj){
+        if(obj!==null){
+            if(obj!==null&&obj.firstElementChild){
+                childs.push(obj);
+                for(var i=0;i<obj.childNodes.length;i++){
+                    if(obj.childNodes[i].nodeType=='1')
+                    {DF(obj.childNodes[i]);}
+                }
+            }else{
+                childs.push(obj);
+            }
+        }
+    }
+
+
+    traversal_2.onclick=function(event){
+        if(!(text.value=='')){
+            WF(wrap);
+             console.log(childs);
+            chgColor(childs);
+        }else{
+            alert('请输入要查找的内容');
+        };
+    }
+
+// 深度优先：从最底层的子元素开始往上查找，经过每一个节点，直到最后的根节点，从下往上
+    function WF(obj){
+        if(obj!==null){
+            // obj下面还有子元素
+            if(obj!==null&&obj.firstElementChild){
+                for(var j=0;j<obj.childNodes.length;j++){
+                        if(obj.childNodes[j].nodeType=='1'){
+                            // console.log(obj.childNodes[j].innerHTML);
+                            WF(obj.childNodes[j]); }
+                        }
+                        childs.push(obj);
+                 // DF(obj.firstElementChild);
+            }else{
+                childs.push(obj);
+            }
+        }
+    }
+
+    function chgColor(arr){
+        var i=0;
+        arr[i].style.backgroundColor='pink';
+        // console.log(arr[i].firstChild.nodeValue);
+        // console.log(text.value);
+        var timer=setInterval(function(){
+            // 对最后一个元素是否是要查找的内容进行判断
+            if(i==arr.length-1){
+                if(arr[i].firstChild.nodeValue.replace(/\s*$/g,"")==text.value){
+                   alert('已查找到目标内容！');
+               }else{alert('没有找到！');}
+                stop(arr,i,timer);
+            }else{
+                if(arr[i].firstChild.nodeValue.replace(/\s*$/g,"")==text.value){
+                    alert('已查找到目标内容！');
+                    stop(arr,i,timer);
+                }else{
+                    arr[i].style.backgroundColor='';
+                    arr[i+1].style.backgroundColor='pink';
+                   };
+
+                }
+                i++;
+        },300);
+    }
+
+    function stop(array,index,tim){
+                array[index].style.backgroundColor='';
+                clearInterval(tim);
+                //注意此处一定要是清空全局的数组childs,array是引用
+                childs=[];
+    }
+</script>
+</body>
+</html>

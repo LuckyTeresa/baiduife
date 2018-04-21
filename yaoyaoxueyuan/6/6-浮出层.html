@@ -1,0 +1,176 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <title>Document</title>
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            font-size:14px;
+        }
+       html,body{
+           height:3000px;
+           width:100%;
+       }
+    </style>
+</head>
+<body>
+
+<script>
+
+function FloatBox(height,width){
+    this.height=height;
+    this.width=width;
+}
+
+FloatBox.prototype.init=function(obj,str_title,str_content){
+
+    // 西瓜红遮罩
+    var mask=document.createElement('div');
+        mask.className='mask';
+        mask.style.cssText="position:absolute;top:0;left:0;bottom:0;right:0;background-color:red;opacity:0.5;display:none";
+        document.body.appendChild(mask);
+    // 浮出层盒子
+    var box=document.createElement('div');
+        box.className='floatbox';
+        box.style.cssText='background-color:#B1B4A7;box-sizing:border-box;position:fixed;top:50%;left:50%;border:3px solid #EAE135;display:none;-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;-o-user-select: none;user-select: none;';
+        box.style.height=this.height+'px';
+        box.style.width=this.width+'px';
+        box.style.marginTop=-this.height/2+'px';
+        box.style.marginLeft=-this.width/2+'px';
+        document.body.appendChild(box);
+
+        // document.onclick=this.close;
+
+    // 在box右下角添加一个小盒子用于resize
+    var small=document.createElement('div');
+        box.appendChild(small);
+        // box是fixed定位一样可以用于子元素的absolute定位
+        small.style.cssText='height:10px;width:10px;position:absolute;bottom:0;right:0;cursor:se-resize;';
+        small.onmousedown=function(){
+        document.onmousemove=function(event){
+            event=event||window.event;
+            resize(box,event,box.offsetLeft,box.offsetTop);
+        }
+        document.onmouseup=function(){
+            document.onmousemove=null;
+            document.onmouseup=null;
+        }
+    }
+        function resize(obj,e,orgL,orgT){
+            obj.style.width=e.clientX-orgL+'px';
+            obj.style.height=e.clientY-orgT+'px';
+        }
+
+    var title=document.createElement('div');
+        title.innerHTML=str_title;
+        title.style.cssText='background-color:#EAE135;text-align:center';
+        box.appendChild(title);
+        title.onmousedown=function(e){
+            var floatbox=document.getElementsByClassName('floatbox')[0];
+            title_offetLeft=parseInt(floatbox.offsetLeft)+parseInt(getStyle(floatbox,'border').split('px')[0]);
+            title_offetTop=parseInt(floatbox.offsetTop)+parseInt(getStyle(floatbox,'border').split('px')[0]);
+            posX=e.clientX-title_offetLeft;
+            posY=e.clientY-title_offetTop;
+            document.onmousemove=function(event){
+                event=window.event||event;
+                move(event,posX,posY);
+            }
+            document.onmouseup=function(){
+                document.onmousemove=null;
+                document.onmouseup=null;
+            }
+            function getStyle(element,attr){
+                return element.currentStyle?element.currentStyle[attr]:getComputedStyle(element)[attr];}
+        }
+            function move(e,X,Y){
+            var floatbox=document.getElementsByClassName('floatbox')[0];
+                floatbox.style.position='absolute';
+                // 因为上面同时设置了fixed定位的top，left值和margin-top和margin-left值，所以在拖动的时候要先把margin值置空，这样设置top和left才有效
+                floatbox.style.marginTop='';
+                floatbox.style.marginLeft='';
+            var disX=e.clientX-X,
+                disY=e.clientY-Y,
+                winW=document.documentElement.clientWidth||document.body.clientWidth,
+                winH=document.documentElement.clientWidth||document.body.clientWidth,
+                maxW=winW-floatbox.offsetWidth;
+                maxH=winH-floatbox.offsetHeight;
+                // 判断边界
+                if(disX<0){
+                    disX=0;
+                }else if(disX>maxW){
+                    disX=maxW;
+                }
+                if(disY<0){
+                    disY=0;
+                }else if(disY>maxH){
+                    disY=maxH;
+                }
+                floatbox.style.left=disX+'px';
+                floatbox.style.top=disY+'px';
+            }
+
+    var content=document.createElement('div');
+        content.innerHTML=str_content;
+        content.style.cssText='background-color:#B1B4A7;text-indent:1.5em;';
+        box.appendChild(content);
+
+    var sure=document.createElement('button');
+        sure.type='button';
+        sure.innerHTML='单击禁止网页滚动';
+        sure.style.cssText='width:50px;position:absolute;bottom:10px;left:50px';
+        box.appendChild(sure);
+        sure.onclick=function(event){
+            stopPropagation(event);
+            obj.stopScroll();
+        }
+
+    var cancel=document.createElement('button');
+        cancel.type='button';
+        cancel.innerHTML='取消';
+        cancel.style.cssText='width:50px;position:absolute;bottom:10px;right:50px';
+        box.appendChild(cancel);
+        cancel.onclick=this.close;
+    // 显示浮出层
+    var btn=document.createElement('button');
+        btn.innerHTML='FLOAT BOX';
+        btn.type='button';
+        document.body.appendChild(btn);
+        // var that=this;
+        btn.onclick=function(event){
+            stopPropagation(event);
+            obj.show();
+        }
+    function stopPropagation(event){
+        event.stopPropagation?event.stopPropagation():event.cancelBubble=false;
+    }
+}
+
+
+FloatBox.prototype.show=function(){
+    var mask=document.getElementsByClassName('mask')[0];
+    var floatbox=document.getElementsByClassName('floatbox')[0];
+    mask.style.display='block';
+    floatbox.style.display='block';
+}
+FloatBox.prototype.close=function(){
+    var floatbox=document.getElementsByClassName('floatbox')[0];
+    var mask=document.getElementsByClassName('mask')[0];
+        floatbox.style.display='none';
+        mask.style.display='none';
+}
+FloatBox.prototype.stopScroll=function(){
+
+}
+
+
+
+var floatBox=new FloatBox(200,300);
+    floatBox.init(floatBox,'我是浮出层标题','这是浮出层内容，内容里面说点什么了？我们就随便说一说吧，今天吃的成都干锅真是辣哈哈哈哈啊哈');
+
+
+
+</script>
+</body>
+</html>

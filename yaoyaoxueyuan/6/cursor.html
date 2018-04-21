@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <title>Document</title>
+    <style>
+    *{
+        margin:0;
+        padding:0;
+    }
+    .box{
+
+        height:100px;
+        width:100px;
+        border:3px solid #289B3D;
+        position:relative;
+    }
+    </style>
+</head>
+<body>
+<div class='box'>
+</div>
+<script>
+    var small=document.createElement('div');
+    var box=document.getElementsByClassName('box')[0];
+    box.appendChild(small);
+    small.style.cssText='height:10px;width:10px;position:absolute;right:0;bottom:0;cursor:se-resize;';
+    small.onmousedown=function(e){
+        e=e||event;
+        document.onmousemove=function(event){
+            event=event||window.event;
+            // console.log(box.offsetLeft);
+            // console.log(box.offsetWidth);
+            resize(box,event,box.offsetLeft,box.offsetTop);
+        }
+        document.onmouseup=function(){
+            document.onmousemove=null;
+        document.onmouseup=null;
+        }
+    }
+    function resize(obj,e,orgL,orgT){
+        obj.style.width=e.clientX-orgL+'px';
+        obj.style.height=e.clientY-orgT+'px';
+
+    }
+    function getStyle(element,attr){
+        return element.currentStyle?element.currentStyle[attr]:getComputedStyle(element)[attr];
+    }
+
+</script>
+
+</body>
+</html>

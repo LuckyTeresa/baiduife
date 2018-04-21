@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>IFE JavaScript Task 01</title>
+  </head>
+<body>
+<!-- 用户可以在输入框中输入任何内容，点击“确认填写”按钮后，用户输入的内容会显示在“您输入的值是”文字的右边 -->
+
+  <label for='aqi-input'>请输入北京今天空气质量：<input id="aqi-input" type="text"></label>
+  <button id="button">确认填写</button>
+
+  <div>您输入的值是：<span id="aqi-display">尚无录入</span></div>
+
+<script type="text/javascript">
+window.onload=function(){
+ var but=document.getElementById('button');
+    but.onclick=function(){
+   fuzhi();
+    }
+document.onkeydown=function(e){
+  if(e.keyCode==13){
+    fuzhi();
+  }
+}
+function fuzhi(){
+  var aqi=document.getElementById('aqi-display');
+   var ipt=document.getElementById('aqi-input');
+     aqi.innerHTML=ipt.value;
+}
+}
+</script>
+</body>
+</html>
+
+<!-- 要注意的问题：
+ 获取input标签中的值要用value，不是html。
+ -->
+
+<!-- 一般将script放在body之后是因为避免长时间执行script脚本而延迟阻塞。
+而有一些页面的效果的实现，是需要预先动态的加载一些js脚本，所以这些脚本应该放在<body>之前。
+其次，不能将需要访问dom元素的js放在body之前，因为此时还没有开始生成dom，所以在body之前的访问dom元素的js会出错，或者无效。
+还有另外一种方法，那就是用jquery的初始化页面方法，把上面给标签添加的点击事件加入到$(function(){})中也是可以的，原理和上面是一样的，这个方法是等页面加载好了才执行，所以不管放在哪都可以了！ -->

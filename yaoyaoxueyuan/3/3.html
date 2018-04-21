@@ -1,0 +1,203 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <title>Document</title>
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            font-size:14px;
+        }
+        .box{
+            width:400px;
+            height:200px;
+            margin:20px auto;
+        }
+        .choose{
+            width:300px;
+            margin:0 50px;
+            text-align:center;
+            padding:20px 0;
+
+        }
+        .wrapper{
+            display:inline-block;
+            width:20px;
+            height:20px;
+            vertical-align:middle;
+            background-color:#27ADBC;
+            border-radius:100%;
+            position:relative;
+
+        }
+        .wrapper input{
+            position:absolute;
+            top:0;
+            left:0;
+            height:100%;
+            width:100%;
+            opacity:0;
+            z-index:5;
+        }
+        .wrapper span{
+            position:absolute;
+            top:50%;
+            height:50%;
+            background-color:#fff;
+            height:8px;
+            width:8px;
+            border-radius:100%;
+            margin-left:-4px;
+            margin-top:-4px;
+            z-index:1;
+        }
+        .wrapper span{
+            opacity:0;
+        }
+        .wrapper input[type='radio']:checked +span{
+            opacity:1;
+        }
+
+        label{
+            display:inline-block;
+            padding:0 40px 0 5px;
+        }
+        input:not([type='radio']),select{
+            outline:none;
+            border:1px solid grey;
+            border-radius:3px;
+            height:30px;
+
+        }
+        .showBox{
+            height:100px;
+            margin-left:50px;
+            display:none;
+        }
+        #city,#college{
+            display:inline-block;
+            padding:0 20px;
+            text-align:left;
+            margin-left:20px;
+        }
+        #company input{
+            margin-left:10px;
+            width:200px;
+        }
+    </style>
+</head>
+<body>
+<div class='box'>
+    <div class='choose'>
+        <div class='wrapper'>
+            <input id='teenager' type="radio" name="identify"><span></span>
+        </div>
+        <label for='teenager'>在校生</label>
+         <div class='wrapper'>
+            <input id='adults' type="radio" name="identify"><span></span>
+        </div>
+        <label for='adults'>非在校生</label>
+    </div>
+    <div class='showBox' id='school'>
+        <span>学校</span>
+        <select id='city' name="" size=1>
+            <option value="BJ" selected='selected' >北京</option>
+            <option value="WH" >武汉</option>
+            <option value="JZ">荆州</option>
+        </select>
+        <select id='college' name="" size=1>
+            <option class='BJ' value="">北京大学</option>
+            <option class='BJ' value="">清华大学</option>
+            <option class='WH' value="">武汉大学</option>
+            <option class='WH' value="">华中科技大学</option>
+            <option class='WH' value="">武汉纺织大学</option>
+            <option class='JZ' value="">佳尼敦大学</option>
+            <option class='JZ' value="">长江大学</option>
+        </select>
+    </div >
+    <div class='showBox' id='company'>
+      <label>就业单位<input type="text" name="" value=""></label>
+    </div>
+</div>
+<script>
+var teenager=document.getElementById('teenager');
+var adults=document.getElementById('adults');
+var school=document.getElementById('school');
+var company=document.getElementById('company');
+var city=document.getElementById('city')
+
+// 选择在校生和非在校生分别应用不同的样式
+teenager.onfocus=function(){
+    school.style.display='block';
+    company.style.display='none';
+}
+adults.onfocus=function(){
+    school.style.display='none';
+    company.style.display='block';
+}
+
+//一进来第一个下拉列表的初始值为北京，二级菜单选择北京相应的学校
+choose_school(city.value);
+//IE和非IE浏览器对'\v'的转义方式不同
+('\v'=='v')?city.onpropertychange=abc:city.addEventListener('input',abc, false);
+
+/*选择不同城市，对应不同学校*/
+function abc(){
+    var city=document.getElementById('city');
+    var college=document.getElementById('college');
+    var options=college.getElementsByTagName('option');
+    if(city.value=='BJ'){
+     choose_school('BJ');
+    }else if(city.value=='WH'){
+     choose_school('WH');
+    }else{
+     choose_school('JZ');
+    }
+}
+
+function choose_school(str){
+   var college=document.getElementById('college');
+   var options=college.getElementsByTagName('option');
+   var arr=[];
+   for(var i=0;i<options.length;i++){
+             console.log(options[i].className);
+            if(options[i].className!=str){
+                options[i].style.display='none';
+            }else{
+                options[i].style.display='block';
+                arr.push(options[i]);
+            }
+    }
+    arr[0].selected='selected';
+}
+</script>
+</body>
+</html>
+<!--
+ if(!+"\v1")
+其实就是利用各浏览器对转义字符"\v"的理解
+在ie浏览器中，"\v"没有转义，得到的结果为"v"
+而在其他浏览器中"\v"表示一个垂直制表符（一定程度上相当于空格）
+所以ie解析的"\v1" 为 "v1"
+而其他浏览器解析到 "\v1" 为 "1"
+在前面加上一个"+"是为了把后面的字符串转变成数字
+由于ie认为"\v1"为"v1"，所以前面的加上加号无法转变成数字，为NaN
+其他浏览器均能变成 1
+再因为js与c语言类似，进行逻辑判断时可使用数字，并且 0 为 false，其他数字则为true
+所以 !1 = false ，于是其他浏览器均返回false
+js在遇到如下几个值会返回false：undefined、null、NaN，所以ie中 !NaN = true
+
+
+1、onchange事件与onpropertychange事件的区别：
+onchange事件在内容改变（两次内容有可能还是相等的）且失去焦点时触发；onpropertychange事件却是实时触发，即每增加或删除一个字符就会触发，通过js改变也会触发该事件，但是该事件IE专有。
+
+2、oninput事件与onpropertychange事件的区别：
+oninput事件是IE之外的大多数浏览器支持的事件，在value改变时触发，实时的，即每增加或删除一个字符就会触发，然而通过js改变value时，却不会触发；onpropertychange事件是任何属性改变都会触发的，而oninput却只在value改变时触发，oninput要通过addEventListener()来注册，onpropertychange注册方式跟一般事件一样。（此处都是指在js中动态绑定事件，以实现内容与行为分离）
+
+3、oninput与onpropertychange失效的情况：
+（1）oninput事件：a). 当脚本中改变value时，不会触发；b). 从浏览器的自动下拉提示中选取时，不会触发。
+（2）onpropertychange事件：当input设置为disable=true后，onpropertychange不会触发。
+
+
+ -->

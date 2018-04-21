@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <title>Document</title>
+</head>
+<body>
+<div id="box1">*
+    123
+    *<a href="http://www.baidu.com" target='_blank'>12bb</a>
+    <span>农夫果园</span>
+    <p>我是另外一个段落</p>
+</div>
+<script>
+/*var box1=document.getElementById('box1');
+    console.log(box1.firstChild.nodeValue);
+    // if(box1.firstChild.nodeValue.replace(/\s*$/g,"")=='123'){
+     if(box1.firstChild.nodeValue=='123'){
+        alert('yes');
+    }*/
+    /* var str="中华人民共和国，中华人民共和国";
+
+   var newstr=str.replace(/(人)/g,"<font color=red>$1</font>");
+
+   document.write(newstr);*/
+
+
+    /* var s=prompt("请输入在查找的字符","人");
+
+    var reg=new RegExp("("+s+")","");
+   var str="中华人民共和国，中华人民共和国";
+   console.log(str.match(reg));
+    var newstr=str.replace(reg,"<font color=red>$1</font>");
+    document.write(newstr);*/
+
+    /* var reg=new RegExp("\\d","g");
+
+   var str="abd1afa4sdf";
+    str.replace(reg,function(){alert(arguments.length);});*/
+
+     /*function test(){
+        console.log(arguments.length);
+    for(var i=0;i<arguments.length;i++){
+        console.log("第"+(i+1)+"个参数的值："+arguments[i]);
+    }
+    }
+   var reg=new RegExp("\\d","g");
+    var str="abd1afa4sdf";
+   str.replace(reg,test);*/
+   /*第一个参数表示匹配到的字符，第二个参数表示匹配时的字符最小索引位置(RegExp.index)，第三个参数表示被匹配的字符串(RegExp.input)。其实这些参数的个数，还会随着子匹配的变多而变多的。*/
+
+
+    /*  function test($1){
+
+      return "<font color='red'>"+$1+"</font>"
+    }
+    var s=prompt("请输入在查找的字符","人");
+   var reg=new RegExp("("+s+")","g");
+    var str="中华人民共和国，中华人民共和国";
+    var newstr=str.replace(reg,test);
+    document.write(newstr);*/
+
+
+      var str="他今年22岁，她今年20岁，他的爸爸今年45岁，她的爸爸今年44岁，一共有4人"
+
+    function test($1){
+
+      var gyear=(new Date()).getYear()-parseInt($1)+1;
+
+      return $1+"("+gyear+"年出生)";
+
+   }
+
+   var reg=new RegExp("(\\d+)岁","g");
+
+    var newstr=str.replace(reg,test);
+
+    console.log(str);
+
+ console.log(newstr);
+
+
+ /*
+
+  replace([RegExp|String],[String|Function])
+第1个参数可以是一个普通的字符串或是一个正则表达式
+第2个参数可以是一个普通的字符串或是一个回调函数
+如果第1个参数是RegExp, JS会先提取RegExp匹配出的结果，然后用第2个参数逐一替换匹配出的结果
+如果第2个参数是回调函数，每匹配到一个结果就回调一次，每次回调都会传递以下参数：
+
+result: 本次匹配到的结果
+
+$1,...$9: 正则表达式中有几个()，就会传递几个参数，$1~$9分别代表本次匹配中每个()提取的结果，最多9个
+
+offset:记录本次匹配的开始位置
+
+source:接受匹配的原始字符串*/
+</script>
+
+</body>
+</html>

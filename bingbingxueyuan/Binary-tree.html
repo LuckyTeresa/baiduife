@@ -1,0 +1,181 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <title>Document</title>
+</head>
+<body>
+<script>
+    function BinaryTree(){
+        // 创建一个普通节点，左右子节点都为空
+        var Node=function(key){
+            this.key=key;
+            this.left=null;
+            this.right=null;
+        };
+
+        var root=null;
+        this.insert=function(key){
+            // 判断root是否为空，决定插入的节点是否为root节点
+            var newNode=new Node(key);
+            if(root==null){
+                root=newNode;
+            }else{
+                insertNode(root,newNode);
+            }
+        };
+        var insertNode=function(node,newNode){
+            // 决定插入的方向
+            if(newNode.key<node.key){
+                if(node.left===null){
+                    node.left=newNode;
+                }else{
+                    insertNode(node.left,newNode);
+                }
+            }else{
+                if(node.right===null){
+                    node.right=newNode;
+                }else{
+                    insertNode(node.right,newNode);
+                }
+            }
+        };
+        // 我要用中序遍历的方法访问树中的每一个元素，对其执行callback函数的操作。所以首先我要传一个callback函数进来。我要先找到每一个节点，此时是不是要先确定root节点，所以这里调用另外一个函数，传进去参数root和callback。当这个树不是一个空树的时候，就按照中序遍历的规则去遍历每一个节点，并执行callback操作。
+        this.inOrderTraverse=function(callback){
+            inOrderTraverseNode(root,callback);
+        };
+        var inOrderTraverseNode=function(node,callback){
+            if(node!==null){
+                inOrderTraverseNode(node.left,callback);
+                callback(node.key);
+                inOrderTraverseNode(node.right,callback);
+            }
+        };
+        var preOrderTraverseNode=function(node,callback){
+            if(node!==null){
+                callback(node.key);
+                preOrderTraverseNode(node.left,callback);
+                preOrderTraverseNode(node.right,callback);
+            }
+        };
+        this.preOrderTraverse=function(callback){
+            preOrderTraverseNode(root,callback);
+        };
+        var postOrderTraverseNode=function(node,callback){
+            if(node!==null){
+                postOrderTraverseNode(node.left,callback);
+                postOrderTraverseNode(node.right,callback);
+                callback(node.key);
+            }
+        }
+        this.postOrderTraverse=function(callback){
+            postOrderTraverseNode(root,callback);
+        }
+        var minNode=function(node){
+            if(node){
+                // while中的node与上面的node已经有了不同的含义。if中，node只代表根节点。下面的node还代表其他直接点的父节点，父节点存在并且父节点的左子树存在两个条件必须同时成立
+                while(node&&node.left!==null){
+                    node=node.left;
+                }
+                return node.key;
+            }
+            // 根节点为空，为空树
+            return null;
+        };
+        this.min=function(){
+            // min 和max这里不用传参数，因为直接在整个树中查找
+            return minNode(root);
+        };
+        var maxNode=function(node){
+            if(node){
+                while(node&&node.right!==null){
+                    node=node.right;
+                }
+                return node.key;
+            }
+            return null;
+        };
+        this.max=function(){
+            return maxNode(root);
+        };
+        this.search=function(key){
+            return searchNode(root,key);
+        };
+        var searchNode=function(node,key){
+            if(node===null){
+                // 为空树，没找到
+                return false;
+            }else{
+               if(key<node.key){return searchNode(node.left,key);}
+               else if(key>node.key){ return searchNode(node.right,key);}
+               else{return true;}
+            }
+        };
+        this.remove=function(key){
+            root=removeNode(root,key);
+        };
+        var removeNode=function(node,key){
+            if(node===null){return null;}
+            // 如果key比node.key小，就把key和node.left比较
+            if(key<node.key){
+                node.left=removeNode(node.left,key);
+                return node;}
+            else if(key>node.key){
+                node.right=removeNode(node.right,key);
+                return node;}
+            else{
+                // key=node.key,已经找到了要删除的节点
+                // 第一种情况：该节点没有子节点，直接删除
+                if(node.left===null&&node.right===null){
+                        node=null;
+                        return node;}
+                    // 第二种情况：该节点有右子节点，把他的右子节点直接提升
+                    else if(node.left===null){
+                            node=node.right;
+                            return node;}
+                    // 第三种情况：该节点有左子节点，把他的左子节点直接提升
+                    else if(node.right===null){
+                            node=node.left;
+                            return node;}
+                    // 第四种情况：左右节点都有，这时候要找到这个节点下面的只比节点大一级的另一个节点(这个节点在它右子树下面的左子树，直到找到最下面一层)，将其作为新的节点
+                    else{
+                    // 找到替代节点
+                    var aux=findMinNode(node.right);
+                    node.key=aux.key;
+                    // 将这个找到的新节点的原有位置删除。node.right 为根节点，aux.key为要删除的节点
+                    node.right=removeNode(node.right,aux.key);
+                    return node;}
+                }
+        }
+        var findMinNode=function(node){
+                if(node){
+                    while(node&&node.left!==null){node=node.left;}
+                    return node;}
+                return null;
+        }
+    }
+    var nodes=[8,3,10,1,6,14,4,7,13];
+    var binaryTree=new BinaryTree();
+    nodes.forEach(function(key){
+        binaryTree.insert(key);
+
+    });
+    var callback=function(key){
+        console.log(key);
+    }
+    // 中序遍历会将树以升序方式打印
+     binaryTree.inOrderTraverse(callback);
+    // 通过前序遍历的方式复制一棵已经存在的二叉树效率是最高的
+    // 后续遍历用于操作系统的文件系统文件查找等
+     binaryTree.preOrderTraverse(callback);
+      binaryTree.postOrderTraverse(callback);
+    // console.log('min is '+binaryTree.min());
+    // console.log('max is '+binaryTree.max());
+    // console.log(binaryTree.search(7)?'key 7 is found':'key 7 is not found');
+    // console.log(binaryTree.search(9)?'key 9 is found':'key 9 is not found');
+     // binaryTree.remove(3);
+     binaryTree.inOrderTraverse(callback);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>IFE JavaScript Task 01</title>
+  </head>
+  <!-- 参考以下示例代码，读取页面上已有的source列表，从中提取出城市以及对应的空气质量
+将数据按照某种顺序排序后，在resort列表中按照顺序显示出来 -->
+<body>
+
+  <ul id="source">
+    <li>北京空气质量：<b>90</b></li>
+    <li>上海空气质量：<b>70</b></li>
+    <li>天津空气质量：<b>80</b></li>
+    <li>广州空气质量：<b>50</b></li>
+    <li>深圳空气质量：<b>40</b></li>
+    <li>福州空气质量：<b>32</b></li>
+    <li>成都空气质量：<b>90</b></li>
+  </ul>
+
+  <ul id="resort">
+    <!--
+    <li>第一名：北京空气质量：<b>90</b></li>
+    <li>第二名：北京空气质量：<b>90</b></li>
+    <li>第三名：北京空气质量：<b>90</b></li>
+     -->
+  </ul>
+  <button id="sort-btn">排序</button>
+<script type="text/javascript">
+
+// 读取数据
+function getData() {
+  var source=document.getElementById('source');
+  var uls=source.getElementsByTagName('li');
+  var data=[];
+
+for(var i=0;i<uls.length;i++){
+  var temp=[];
+  var str=uls[i].innerHTML;
+  var num=source.getElementsByTagName('b')[i].innerHTML;
+
+  temp.push(str.substring(0,str.indexOf('空气')));
+  temp.push(num);
+
+  data.push(temp);
+}
+return data;
+}
+
+// 传进来一个数组，sortAqiData对数组进行排序，在这个函数中对数组调用sort方法，sort的参数传入一个函数
+
+function sortAqiData(data) {
+ // js没有二维数组
+ data.sort(function By(a,b){
+  if(a[1]>b[1]){return 1;}
+  else if(a[1]==b[1])
+    {if(a[0]>b[0]){return 1;}else return -1;}
+  else{return -1;}
+ });
+ // 一定要记得返回data，不然下面无法获取到
+return data;
+  }
+
+// 在页面中显示
+function render(data) {
+  var resort=document.getElementById('resort');
+  for(var i=0;i<data.length;i++){
+    var li=document.createElement('li');
+    li.innerHTML='第'+(i+1)+'名:'+data[i][0]+' '+'空气质量:'+data[i][1];
+    resort.appendChild(li);
+  }
+}
+
+// 点击按钮时执行btnHandle
+function btnHandle() {
+  // 获取数据
+  var aqiData = getData();
+  // 排序
+  aqiData = sortAqiData(aqiData);
+  // 显示
+  render(aqiData);
+}
+
+function init() {
+//给sort-btn绑定一个点击事件，点击时触发btnHandle函数
+var btn=document.getElementById('sort-btn')
+btn.onclick=btnHandle;
+}
+
+init();
+
+</script>
+</body>
+</html>

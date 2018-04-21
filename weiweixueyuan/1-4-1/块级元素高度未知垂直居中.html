@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <title>Document</title>
+    <style>
+    body {
+  background: #f06d06;
+  font-size: 80%;
+}
+
+main {
+  background: white;
+  height: 300px;
+  margin: 20px;
+  width: 300px;
+  position: relative;
+  resize: vertical;
+  overflow: auto;
+}
+
+main div {
+  position: absolute;
+  top: 50%;
+  left: 20px;
+  right: 20px;
+  background: black;
+  color: white;
+  padding: 20px;
+  transform: translateY(-50%);
+  resize: vertical;
+  overflow: auto;
+}
+
+    </style>
+</head>
+<body>
+<main>
+
+  <div>
+     I'm a block-level element with an unknown height, centered vertically within my parent.
+  </div>
+
+</main>
+
+</body>
+</html>

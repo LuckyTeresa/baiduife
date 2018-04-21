@@ -1,0 +1,446 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <title>Document</title>
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            font-family:'Microsoft Yahei';
+        }
+        .main{
+            width:980px;
+            height:1386px;
+            margin:0 auto;
+
+        }
+        .header{
+            width:892px;
+            height:61px;
+            margin:0 auto;
+            border-bottom:2px solid #938e8c;
+            font:12px '黑体';
+        }
+        .header>div{
+            height:61px;
+            width:110px;
+            background-color:#d45d5c;
+            color:#fff;
+            text-align:center;
+            display:table-cell;
+            vertical-align:bottom;
+        }
+        .header>span{
+            display:block;
+            float:right;
+            margin-top:-20px;
+            color:#d45d5c;
+        }
+        .container{
+            width:892px;
+            margin:20px auto;
+        }
+        .banner{
+            width:641px;
+            height:301px;
+            float:left;
+            background:url('timg.jpg');
+
+        }
+        .pic_left,.pic_right{
+            width:191px;
+            height:301px;
+            opacity:0.5;
+        }
+        .pic_left{
+            background:green;
+            float:left;
+
+        }
+        .pic_right{
+            float:right;
+            background:red;
+        }
+
+
+        .title{
+            width:203px;
+            float:right;
+            border-top:2px solid #cc8091;
+        }
+        /* -n+2 表示<=2的标签  n+2表示>=2的标签  还有2n   2n-1  3n+1:隔二取一; */
+        .title>p:nth-child(1){
+         font-size:24px;
+         /* 段落间距40px  ??? */
+         line-height:40px;
+         text-decoration:underline;
+         font-variant:small-caps;
+         text-transform:capitalize;
+        }
+        .title>p:nth-child(2){
+          font: italic 12px '楷体';
+          color:#676767;
+          /* padding:10px 0; */
+
+        }
+        .title>p:nth-child(3){
+            font:italic 116px '黑体';
+
+            color:#75b86b;
+
+        }
+        .title div{
+            color:#cc8091;
+        }
+        .title>div>p{
+            font-size:55px;
+            float:left;
+        }
+        .title .mini_box{
+            float:left;
+            margin-top:20px ;
+            margin-left:10px;
+        }
+        .mini_box p:nth-child(1){
+            font-size:21px;
+
+        }
+        .mini_box p:nth-child(2){
+            font-size:12px;
+
+        }
+
+        .what,.when,.how{
+            float:left;
+            margin-top:30px;
+            width:210px;
+            margin-right:30px;
+        }
+        .how{
+            width:171px;
+        }
+
+        .what>p:nth-child(1),.when>p:nth-child(1),.how>p:nth-child(1){
+            font-size:16px;
+            font-weight:bold;
+            text-decoration:underline;
+        }
+        .what>p:nth-child(1){
+            color:#418c59;
+        }
+        .when>p:nth-child(1){
+            color:#d2994f;
+        }
+        .how>p:nth-child(1){
+            color:#cc7680;
+        }
+        .what>p:nth-child(2),.when>p:nth-child(2),.how>p:nth-child(n+2){
+            color:#231815;
+            font-size:12px;
+            opacity:0.7;
+        }
+        .how>p:nth-child(3){
+            margin-top:35px;
+        }
+        .how>p:nth-child(n+2){
+            /* 段落间距16px */
+            margin:16px;
+
+        }
+        .how>p:nth-child(n+2)>span{
+            font-size:12px;
+            color:#cd4a48;
+            font-style:italic;
+           /*  display:inline-block;
+           height:16px; */
+        }
+
+        .left{
+            width:415px;
+            float:left;
+            margin-top:45px;
+        }
+        .left>p:nth-child(1){
+            font:bold 42px '黑体' ;
+            color:#11456b;
+        }
+        .left>p:nth-child(1)>strong{
+            font:italic bold 72px '黑体';
+            color:#f5e327;
+        }
+        .left>p:nth-child(2){
+            font:bold 33px '黑体';
+            color:#11456b;
+            border-bottom:2px solid #11456b;
+        }
+        .words,.words2{
+            font:12px '宋体';
+            color:#767777;
+            margin-top:15px;
+
+
+        }
+        .words2{
+            text-indent:2em;
+        }
+        .words::first-letter{
+            font-size:70px;
+            color:#f5e327;
+            /* initial-letter:4  3; */
+            margin-right:10px;
+            float:left;
+        }
+
+        .topSpacer{
+            height:50px;
+            width:0;
+            float:right;
+        }
+        .wrap{
+            float:right;
+            clear:both;
+            margin:10px 0 10px 10px;
+            width:180px;
+            height:200px;
+            overflow:hidden;
+
+        }
+
+        .right{
+            float:right;
+            width:458px;
+            display:table-cell;
+            margin-top:45px;
+        }
+        .pic{
+            width:458px;
+            height:275px;
+            background:url('3.jpg');
+        }
+        .pic .img_title{
+           float:left;
+            width:458px;
+            height:61px;
+            background:#333228;
+            opacity:0.7;
+            margin-top:-61px;
+        }
+        .img_title>p{
+            height:44px;
+            margin-top:8px;
+            margin-left:40px;
+            padding-left:15px;
+            border-left:3px solid #72b16a;
+            font-size:26px;
+            color:#fff;
+        }
+        .img_title p span{
+            font-size:12px;
+            font-style:italic;
+            color:#72b16a;
+
+
+        }
+        .links{
+            background-color:#C9C992;
+            padding-top:15px;
+            margin-top:20px;
+            overflow:hidden;
+        }
+
+        .three div{
+            font:16px '宋体';
+            margin:20px;
+
+        }
+        .three>div>div{
+
+            border-bottom:8px solid #052E03;
+            border-right:4px solid transparent;
+            border-left:4px solid transparent;
+            height:0;
+            width:0;
+            margin:0px 10px 0 0;
+            display:inline-block;
+
+        }
+        .links a{
+            text-align:justify;
+            text-decoration:none;
+            color:#5a5b5b;
+
+        }
+        .right1{
+            width:260px;
+            height:160px;
+            margin-top:15px;
+            background-color:#d45d5c;
+            float:left;
+            color:#fff;
+        }
+        .right1 p:nth-child(1){
+            font-size:110px;
+            font-family:'黑体';
+            float:left;
+
+            margin:17px 15px 0 15px;
+
+        }
+        .right1 p:nth-child(2){
+            width:2px;
+            height:86px;
+            float:left;
+            background-color:#fff;
+            margin-top:37px;
+        }
+        .right1 .num{
+            font:italic 21px '黑体';
+            float:left;
+            width:168px;
+            margin:45px 0 5px 5px;
+
+        }
+        .right1 .small{
+            font:12px '黑体';
+            float:left;
+            width:168px;
+            margin-left:5px;
+
+        }
+        .right2{
+            float:left;
+            width:168px;
+            margin-left:10px;
+            font:italic 14px '黑体';
+            color:#5a5b5b;
+        }
+        /* .right2 div span{
+            font:72px '黑体';
+            color:#d45d5c;
+            vertical-align:bottom;
+            display:inline-block;
+        }
+        .right2 div{
+            display:inline-block;
+        } */
+        .right2 div{
+            font:72px '黑体';
+            color:#d45d5c;
+            float:left;
+            display:inline-block;
+        }
+        .right2 span{
+            /* display:block; */
+          /*  margin:-70px 10px 0 0; */
+       }
+       /* .right2 div span:nth-child(2){
+           margin:60px 10px 0 0;
+
+       }
+ */
+
+
+
+
+
+
+
+
+
+
+
+
+    </style>
+</head>
+<body>
+<div class="main">
+    <div class="header">
+       <div>ife.baidu.com</div>
+       <span>2017.12</span>
+    </div>
+    <div class="container">
+        <div class="column1">
+            <div class="banner">
+                <div class="pic_left"></div>
+                <div class="pic_right"></div>
+
+            </div>
+            <div class="title">
+                <p>about<br />technology</p>
+                <p>About technologe about technologe about technologe</p>
+                <p>700</p>
+                <div>
+                    <p>3.2</p>
+                    <div class='mini_box'>
+                        <p>CSS</p>
+                        <p>我是一行小小字</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col1_bottom">
+                <div class="what">
+                <p>what</p>
+                    <p>5千年前斯里兰卡有一位君主名叫瑞凡那，他把圆柱形的木头掏空制成了与中国二胡极为相似的乐器称瑞凡那斯特隆（Ravanastron），在漫长的历史长河中，瑞凡那斯特隆随着贸易往来而流传四方，这便是小提琴的鼻祖了。不过从有史料记载起，最早的小提琴是由一位住在意大利北部城镇布里细亚（Brescia）名叫达萨洛制成的（Gaspa ro da salo 1542-1609）。</p>
+                </div>
+                <div class="when">
+                <p>when</p>
+                    <p>近百年来，小提琴的结构也没什么大的改变，从这个意义上讲，意大利是小提琴的故乡。而玛基尼、阿玛蒂、斯特拉第瓦利、瓜内利当年所制作的小提琴，现今已成了稀世珍宝、旷世杰作。小提琴的音质基本上取决于它的木质和相应的结构，取决于木材的振动频率和它对弦振动的反应。优质琴能把发出的每个声音的基音和泛音都同样灵敏地传播出去。
+                    </p>
+                </div>
+                <div class="how">
+                    <p>how</p>
+                    <p>小提琴有琴弦4根，原均为羊肠制的裸弦，约从18世纪起，低音G弦常包以银丝，使其反应灵敏。</p>
+                    <p>What------<span>40%</span></p>
+                    <p>What------<span>30%</span></p>
+                    <p>What------<span>30%</span></p>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="column2"> -->
+            <div class="left">
+                <p><strong>THE</strong>&nbsp;TECHNOLOGE OF FRONT</p>
+                <p>前端技术领域</p>
+
+                <div class='topSpacer'></div>
+                <div class='wrap'><img src="2.jpg" alt=""></div>
+                <p class='words'>前面所有的字都是假的，你已经被包围了。快点投降吧！前面所有的字都是假的，你已经被包围了。快点投降吧！前面所有的字都是假的，你已经被包围了。快点投降吧！前面所有的字都是假的，你已经被包围了。快点投降吧！前面所有的字都是假的，你已经被包围了。快点投降吧！前面所有的字都是假的，你已经被包围了。快点投降吧！前面所有的字都是假的，你已经被包围了。前面所有的字都是假的，你已经被包围了。快点投降吧！前面所有的字都是假的，你已经被包围了。快点投降吧！前面所有的字都是假的，你已经被包围了。快点投降吧！前面所有的字都是假的，你已经被包围了。前面所有的字都是假的，你已经被包围了。快点投降吧！前面所有的字都是假的，你已经被包围了。快点投降吧！前面所有的字都是假的，你已经被包围了。快点投降吧！前面所有的字都是假的，你已经被包围了。</p>
+                <p class='words2'>快点投降吧！前面所有的字都是假的，你已经被包围了。快点投降吧！前面所有的字都是假的，你已经被包围了。快点投降吧！前面所有的字都是假的，你已经被包围了。快点投降吧！前面所有的字都是假的，你已经被包围了。快点投降吧！前面所有的字都是假的，你已经被包围了。快点投降吧！前面所有的字都是假的，你已经被包围了。快点投降吧！前面所有的字都是假的，你已经被包围了。快点投降吧！前面所有的字都是假的，你已经被包围了。快点投降吧！前面所有的字都是假的，你已经被包围了。快点投降吧！前面所有的字都是假的，你已经被包围了。快点投降吧！前面所有的字都是假的，你已经被包围了。快点投降吧！</p>
+
+            </div>
+            <div class="right">
+                <div class="pic">
+                    <img src="3.jpg" alt="">
+                    <div class="img_title">
+                        <p>前端技术&nbsp;&nbsp;<span>我是一行斜体小字</span></p>
+                    </div>
+                </div>
+                <div class="links">
+                <div class='three'>
+
+                    <div><div>
+
+                    </div><a href="">秋天的一片落叶..........   ....落叶</a></div>
+                    <div><div>
+
+                    </div><a href="">春天的一抹新芽..............生意</a></div>
+                    <div><div>
+
+                    </div><a href="">冬天的漫天大雪..............寒风</a></div>
+                </div>
+                    <div class="right1">
+                        <p>O</p>
+                        <p></p>
+                        <div class='num'>ONE TWO THREE FOUR FIVE</div>
+                      <div class='small'>我是一行小小字我是一行小小字我是一行小小字</div>
+                    </div>
+                    <div class="right2"><div><span>“</span></div>盼我疯魔还盼我孑孓不独活想我冷艳还想我轻佻又下贱要我阳光还要我风情不摇晃戏我哭笑无主还戏我心如枯木赐我梦境还赐我很快就清醒与我沉睡还与我蹉跎无慈悲爱我纯粹还爱我赤裸不靡颓看我自弹自唱还看我痛心断肠愿我如烟还愿我<div><span>”</span></div></div>
+                    </div>
+            </div>
+       <!--  </div> -->
+    </div>
+    <div class="footer"></div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,213 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <title>Document</title>
+    <style>
+        *{
+            margin:0;
+            font-size:14px;
+        }
+        input{
+            outline:none;
+           /*  border:1px solid grey;
+           border-radius:5px; */
+            width:300px;
+            height:20px;
+        }
+        #form{
+            margin:20px auto;
+            width:400px;
+        }
+        label{
+            display:inline-block;
+            width:60px;
+            text-align:right;
+            margin-right:5px;
+        }
+        div[class='msg']{
+            padding-top:5px;
+            padding-bottom:15px;
+            height:20px;
+            margin-left:70px;
+            color:grey;
+        }
+        .submit{
+            color:white;
+            margin-left:310px;
+            width:60px;
+            height:30px;
+        }
+
+    </style>
+</head>
+<body>
+<!-- 表单获得焦点时，下方显示表单填写规则
+表单失去焦点时校验表单内容
+校验结果正确时，表单边框显示绿色，并在下方显示验证通过的描述文字
+校验结果错误时，表单边框显示红色，并在下方显示验证错误的描述文字
+点击提交按钮时，对页面中所有输入进行校验，校验结果显示方式同上。若所有表单校验通过，弹窗显示“提交成功”，否则显示“提交失败” -->
+
+<form  id='form' action="" method="get" accept-charset="utf-8">
+
+ <label for='username'>名称</label>
+ <input id='username' type="text" name="username" value="">
+ <div class='msg' id='msg_username'></div>
+
+ <label for='psd'>密码</label>
+ <input id='psd' type="password" name="password1" value="">
+ <div class='msg' id='msg_psd'></div>
+
+ <label for='cfmpsd'>确认密码</label>
+ <input id='cfmpsd' type="password" name="password2" value="">
+ <div class='msg' id='msg_cfmpsd'></div>
+
+ <label for='mail'>邮箱</label>
+ <input id='mail' type="text" name="mail" value="">
+ <div class='msg' id='msg_mail'></div>
+
+ <label for=phone>手机</label>
+ <input id='phone' type="text" name="tel" value="">
+  <div class='msg' id='msg_phone'></div>
+
+ <input id='submit' class='submit' type="submit" name="" >
+
+</form>
+
+<script>
+    var username=document.getElementById('username'),
+        psd=document.getElementById('psd'),
+        cfmpsd=document.getElementById('cfmpsd'),
+        mail=document.getElementById('mail'),
+        phone=document.getElementById('phone'),
+        submit=document.getElementById('submit'),
+        username_state=false,
+        psd_state=false,
+        mail_state=false,
+        phone_state=false;
+
+
+    if(username_state&&psd_state&&mail_state&&phone_state){
+        submit.style.backgroundColor='grey';
+    }else{
+        submit.style.backgroundColor='#164FD3';
+    }
+
+
+    username.onfocus=function(){
+        this.nextElementSibling.innerHTML='必填，长度为4-16个字符';
+        reset(this);
+    }
+    username.onblur=function(){
+        // alert(this.nextElementSibling);
+        // var msg_name=document.getElementById('msg_name');
+        var arr=username.value.split('');
+        var len=0;
+        for(var i=0;i<arr.length;i++){
+            if(/[\u4e00-\u9fa5]/.test(arr[i])){
+                len+=2;
+            }else if(/[^\u4e00-\u9fa5|\s]/.test(arr[i])){
+                len+=1;
+            }
+        }
+        if(len>=4&&len<=16){
+                changeColor(this,true)
+                len=0;
+                username_state=true;
+            }else if(len==0){
+                this.nextElementSibling.innerHTML='输入不能为空';
+                this.nextElementSibling.style.color='red';
+            }else{
+                this.nextElementSibling.innerHTML='格式错误';
+                changeColor(this,false);
+                len=0;
+            }
+    }
+
+    psd.onfocus=function testPsd(){
+        this.nextElementSibling.innerHTML='必填，长度为8-12个字符,不包含中文';
+        reset(this);
+    }
+    psd.onblur=function(){
+        var msg_psd=document.getElementById('msg_psd');
+        var arr=psd.value.split('');
+        if(arr.length>=4&&arr.length<=12){
+                changeColor(this,true)
+        }else{
+                this.nextElementSibling.innerHTML='密码长度错误';
+                changeColor(this,false)
+        }
+    }
+
+    cfmpsd.onfocus=function(){
+            this.nextElementSibling.innerHTML='必填，请再次输入密码';
+            reset(this);
+        }
+    cfmpsd.onblur=function(){
+      if(cfmpsd.value==psd.value){
+        changeColor(this,true);
+        psd_state=true;
+      }else{
+        this.nextElementSibling.innerHTML='密码输入错误';
+        changeColor(this,false)
+      }
+    }
+
+    mail.onfocus=function(){
+        this.nextElementSibling.innerHTML='必填，请正确输入邮箱';
+        reset(this);
+    }
+    mail.onblur=function(){
+        var reg=/^[a-zA-Z0-9]+([\-\_\.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,5}$/g;
+    if(reg.test(mail.value)){
+        changeColor(this,true);
+        mail_state=true;
+    }else{
+        this.nextElementSibling.innerHTML='邮箱格式不符合要求';
+        changeColor(this,false);
+        }
+    }
+
+
+    phone.onfocus=function(){
+        this.nextElementSibling.innerHTML='必填，请正确输入手机号';
+        reset(this);
+    }
+    phone.onblur=function(){
+        var reg=/^1[3|5|7|8]{1}[\d]{9}$/g;
+        if(reg.test(phone.value)){
+        changeColor(this,true);
+        phone_state=true;
+    }else{
+        this.nextElementSibling.innerHTML='电话号码不符合要求';
+        changeColor(this,false);
+        }
+
+    }
+
+    submit.onclick=function(){
+        if(username_state&&psd_state&&mail_state&&phone_state){
+            alert('提交成功');
+        }else{
+            alert('数据有误');
+        }
+    }
+
+
+    function changeColor(obj,bool){
+        if(bool==true){
+        obj.nextElementSibling.innerHTML='格式正确';
+       obj.nextElementSibling.style.color='green';
+       obj.style.outline='1px solid green';
+        }else{
+        obj.nextElementSibling.style.color='red';
+        obj.style.outline='1px solid red';
+        }
+    }
+    function reset(obj){
+        obj.style.outline='none';
+        obj.nextElementSibling.style.color='grey';
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,166 @@
+<html>
+<head>
+<TITLE>class_obj_js_class</TITLE>
+<script language=javaScript>
+//sort()方法默认是按照ASCII码大小排序，看下面两个例子。大写字母在小写字母前面
+/*function sortDemo(){
+ var a, l;      // 声明变量。
+ a = new Array("X" ,"y" ,"d", "Z", "v","m","r");
+ l = a.sort();     // 排序数组。
+ return(l);      // 返回排序的数组。如果此处不返回l,下面的alert(l)就会报错
+}
+var l=sortDemo();
+alert(l);*/
+
+
+
+/*function sortDemo2(){
+  var arr = [50,200,3000];
+  arr.sort();
+  alert(arr);
+}
+//显示的结果为200、3000、50，因为是根据首字母2，3，5判断的
+sortDemo2();*/
+
+
+
+
+//if条件是对大小的判断，因此就算对大小的排序.
+//从小到大
+//a<b  返回-1
+//a>b  返回1
+//如果在a>b返回的值为负则是按照降序排列
+//返回-1不交换位置，返回1交换位置
+
+/*function testFunction(){
+  var numArr = new Array(73,56,66);
+  numArr.sort(function compare(a,b){
+    if(a>b){
+      return -1;//按照降序序排列,即a排在b的后面
+    }
+    else
+      return 1;
+  });
+  alert(numArr);
+}
+testFunction();*/
+
+
+
+
+
+// 要使数组的元素按先奇数后偶数的顺序排列，则若需a、b交换，仅当满足a是偶数且b是奇数条件即可，再按从小到大排序，仅当满足a、b均是奇数或偶数且a>b时即可
+// 从下面的例子可以看出,根据if的条件就是需要排序的要求，返回的值大于0就可以了，就是对一次条件的排序
+/*function testAdvance(){
+  var a = [1, 7, 3, 9, 5, 6, 2, 8, 4];
+  function f(a, b) {
+    if (0 == a % 2 && 1 == b % 2) {
+      return 1;//即对偶数和奇数排序，返回1交换位置
+    }
+    if ((1 == a % 2 && 1 == b % 2 || 0 == a % 2 && 0 == b % 2) && a > b) {
+      return 1;//对奇数和偶数排序a>b 返回1交换位置，-1不交换位置所以是升序排序
+    }
+    return -1;
+  }
+ alert(a.sort(f));
+}
+testAdvance();*/
+
+
+
+//我们要做的就是写出if里面的条件，这个条件就是返回a、b需要交换的条件
+//譬如：对var a=["a","A","B","b"];进行不分大小写并从大到小排序，仅当a.toString().toLowerCase() < b.toString().toLowerCase()时，交换a、b，所以用此填充if条件即可。
+/*function testAdvance1(){
+  var a=["a","A","B","b"];
+  a.sort(function test(a,b){
+    if(a.toString().toLowerCase() < b.toString().toLowerCase()){
+      return 1;//返回1交换位置
+    }
+    else
+      return -1;
+  });
+  alert(a);
+}
+ testAdvance1();*/
+
+// 如果a-b为负数，不交换位置，a<b
+// 从小到大
+/* function NumAscSort(a,b)
+{
+ return a - b;
+}
+// 如果b-a为负数，负数不交换位置，a>b
+// 从大到小
+function NumDescSort(a,b)
+{
+ return b - a;
+}
+var arr = new Array( 3600, 5010, 10100, 801);
+arr.sort(NumDescSort);
+alert(arr);
+arr.sort(NumAscSort);
+alert(arr);*/
+
+//by函数接受一个成员名字符串做为参数
+//并返回一个可以用来对包含该成员的对象数组进行排序的比较函数
+var by = function(name){
+ return function(o, p){
+   var a, b;
+   // o  p都为对象并且都存在
+   if (typeof o === "object" && typeof p === "object" && o && p) {
+     a = o[name];//取到年龄数值
+     b = p[name];//取到年龄数值
+
+       // a和b数值相等
+       if (a === b) {
+         return 0;
+       }
+       // a和b的值类型相等，则比较大小，按照升序
+       if (typeof a === typeof b) {
+         return a < b ? -1 : 1;
+       }
+     // 如果a和b的值类型的值类型也不相同，那么就按照他们3值类型的单词字母序排升序
+     return typeof a < typeof b ? -1 : 1;
+   }
+   else {
+     throw ("error");
+   }
+ }
+}
+var employees=[]
+employees[0]={name:"George", age:32, retiredate:"March 12, 2014"}
+employees[1]={name:"Edward", age:17, retiredate:"June 2, 2023"}
+employees[2]={name:"Christine", age:58, retiredate:"December 20, 2036"}
+employees[3]={name:"Sarah", age:62, retiredate:"April 30, 2020"}
+employees.sort(by("age"));
+console.log(employees);
+
+//当主要的键值产生一个匹配的时候，另一个compare方法将被调用以决出高下。
+//by函数接受一个成员名字符串和一个可选的次要比较函数做为参数
+//并返回一个可以用来包含该成员的对象数组进行排序的比较函数
+//当o[age] 和 p[age] 相等时，次要比较函数被用来决出高下
+/*var by = function(name,minor){
+ return function(o,p){
+   var a,b;
+   if(o && p && typeof o === 'object' && typeof p ==='object'){
+     a = o[name];
+     b = p[name];
+     if(a === b){
+      // minor就是传进来的by('name') ,首先他要是一个函数，是就返回minor(o,p),就相当于再次调用by函数，只是这次传进来的参数不再包含函数了，所以在比较一次后就结束
+       return typeof minor === 'function' ? minor(o,p):0;
+     }
+     if(typeof a === typeof b){
+       return a < b ? -1:1;
+     }
+     return typeof a < typeof b ? -1 : 1;
+   }else{
+     thro("error");
+   }
+ }
+}*/
+
+// employees.sort(by('age',by('name')));
+</script>
+<body >
+</body>
+</html>

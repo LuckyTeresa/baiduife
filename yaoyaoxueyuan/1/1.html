@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <title>Document</title>
+    <style>
+        *{ margin:0; font-size:20px; }
+        .wrap{ width:500px; height:50px; line-height:50px; margin:10px auto; }
+        #inp{ /* outline:1px solid #C0C0C0; */
+            outline:none; border-radius:8px; height:30px; width:300px; }
+        span:first-child{ display:inline-block; width:40px; }
+        #btn{ color:#fff; background-color:#507ADE; border-radius:5px; font-size:14px; display:inline-block; margin:5px; padding:5px; }
+        #msg{ display:inline-block; margin-left:40px; }
+    </style>
+</head>
+<body>
+<div class='wrap'>
+<span>名称</span>
+<input  id='inp' type="text" name="">
+<input id='btn' type="button" name="" value='验 证'>
+<span id='msg'></span>
+
+</div>
+<script>
+    var inp=document.getElementById('inp'),
+        btn=document.getElementById('btn'),
+        msg=document.getElementById('msg'),
+        len=0;
+        /*input输入框获取焦点时提示输入规则*/
+        inp.onfocus=function(){
+            msg.innerText='必填,长度为4-16个字符';
+            msg.style.cssText='color:grey';
+        }
+        /*点击验证按钮时对输入进行验证，非中文非空格长度+1，中文长度+2*/
+        btn.onclick=function(){
+            var arr=inp.value.split('');
+            console.log(arr);
+            for(var i=0;i<arr.length;i++){
+                if(/[^\u4e00-\u9fa5|\s]/.test(arr[i])){
+                    len+=1;
+                }else if(/[\u4e00-\u9fa5]/.test(arr[i])){
+                    len+=2;
+                }
+            }
+             console.log(len);
+            if(len>=4&&len<=16){
+                msg.innerText='格式正确';
+                msg.style.cssText='color:#269529';
+                inp.style.border='';
+                len=0;
+            }else if(len==0){
+                msg.innerText='输入不能为空';
+                msg.style.cssText='color:red';
+                inp.style.border='1px solid red ';
+                len=0;
+            }else{
+                msg.innerText='格式错误';
+                msg.style.cssText='color:red';
+                inp.style.border='1px solid red ';
+                len=0;
+            }
+        }
+</script>
+
+</body>
+</html>

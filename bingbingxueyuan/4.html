@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <title>Task-4</title>
+    <!-- 模拟一个队列，队列的每个元素是一个数字，初始队列为空
+有一个input输入框，以及4个操作按钮
+点击"左侧入"，将input中输入的数字从左侧插入队列中；
+点击"右侧入"，将input中输入的数字从右侧插入队列中；
+点击"左侧出"，读取并删除队列左侧第一个元素，并弹窗显示元素中数值；
+点击"右侧出"，读取并删除队列又侧第一个元素，并弹窗显示元素中数值；
+点击队列中任何一个元素，则该元素会被从队列中删除 -->
+    <style>
+    .span_style{
+        background-color:#FF8040;
+        display:inline-block;
+        margin:3px;
+        text-align:center;
+        padding:5px;
+    }
+    </style>
+</head>
+<body>
+<label for="input">请输入要添加的数字</label>
+<input id="input" type="text" name="inp">
+<input id="ist_l" type="button" name="ist_l" value="左侧入">
+<input id="ist_r" type="button" name="ist_r" value="右侧入">
+<input id="del_l" type="button" name="del_l" value="左侧出">
+<input id="del_r" type="button" name="del_r" value="右侧出">
+<p id='tol'></p>
+
+<div>
+
+</div>
+</body>
+<script>
+    var ist_l=document.getElementById('ist_l');
+    var ist_r=document.getElementById('ist_r');
+    var del_l=document.getElementById('del_l');
+    var del_r=document.getElementById('del_r');
+    var nums=document.getElementsByTagName('span');
+    var big_box=document.getElementsByTagName('div')[0];
+    var tol=document.getElementById('tol');
+    var input=document.getElementById('input');
+    var total=0;
+
+    function add_handler(ele,type,handler){
+    if(ele.addEventListener){ele.addEventListener(type,handler,false);}
+    else if(ele.attachEvent){ele.attachEvent('on'+type,handler);}
+    else{event['on'+type]=handler;}
+    }
+
+// 在程序开始执行前就绑定统计数字的功能
+total_num();
+add_handler(ist_l,'click',add_num);
+add_handler(ist_r,'click',add_num);
+add_handler(del_l,'click',remove_num);
+add_handler(del_r,'click',remove_num);
+
+function add_num(){
+    var num=input.value;
+    var box=document.createElement('span');
+        // alert(typeof (num-0));
+        // alert((typeof (num-0) =='number'));
+        // 匹配所有实数
+        var reg=/^[+-]?\d+(\.\d*)?$/.test(num);
+        //  /^(-|\+)?\d+(\.\d+)?$/
+        //  ^[+-]?\d+(\.\d*)?$
+        if(reg){
+        box.innerHTML=num;
+        box.className='span_style';
+        if(this.id=='ist_r'){
+            big_box.appendChild(box);
+            // 在创建每个span标签的时候就绑定移除事件
+            add_handler(big_box.lastChild,'click',remove_num);
+            alert(this.id);
+        }else if(this.id=='ist_l'){
+            big_box.insertBefore(box,nums[0]);
+        }
+        }else{
+                alert('您的输入有误，请重新输入');
+            }
+        // 将input框输入值清空，添加数据后再对总数进行汇总
+        input.value=null;
+        total_num();
+}
+
+
+function remove_num(){
+    if(total==0){
+        alert('没有数据可删除！');
+    }else{
+        /*alert(this.nodeName);
+        alert(this.id);*/
+        if(this.id=='del_l'){
+            alert('即将要删除的数据是'+nums[0].innerHTML);
+            big_box.removeChild(nums[0]);
+    }else if(this.id=='del_r'){
+            alert('即将要删除的数据是'+nums[nums.length-1].innerHTML);
+            big_box.removeChild(nums[nums.length-1]);
+    }else if(this.nodeName=='SPAN'){big_box.removeChild(this);}
+    total_num();
+    }
+}
+
+function total_num(){
+        total=nums.length;
+        tol.innerText='共输入'+total+'个数字';
+}
+
+
+</script>
+</html>
